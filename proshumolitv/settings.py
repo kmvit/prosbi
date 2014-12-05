@@ -25,17 +25,17 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['forum.findotvet.ru']
+ALLOWED_HOSTS = ['']
 
 
 
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 2525
-EMAIL_HOST_USER = 'dronich26rus@mail.ru'
-EMAIL_HOST_PASSWORD = 'justscoundrel'
+EMAIL_HOST_USER = 'my@mail.ru'
+EMAIL_HOST_PASSWORD = 'password'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'dronich26rus@mail.ru'
-SERVER_EMAIL = 'dronich26rus@mail.ru'
+DEFAULT_FROM_EMAIL = 'my@mail.ru'
+SERVER_EMAIL = 'mymail@mail.ru'
 
 # Application definition
 
@@ -78,8 +78,8 @@ WSGI_APPLICATION = 'proshumolitv.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-DATABASES = { 'default': { 'ENGINE': 'django.db.backends.mysql', 'NAME' : 'justscoundrel_prosbi',
-                           'USER': 'justscoundrel', 'PASSWORD': 'urha-murha',
+DATABASES = { 'default': { 'ENGINE': 'django.db.backends.mysql', 'NAME' : 'basename',
+                           'USER': 'justscoundrel', 'PASSWORD': 'password',
                            'HOST': '127.0.0.1', 'PORT': '',
                            'OPTIONS': { 'init_command': 'SET storage_engine=MYISAM;' }
                              } }
