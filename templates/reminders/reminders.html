@@ -1,0 +1,25 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+    <a href="/">На главную</a>
+
+    <h1>Мои помянники</h1>
+    
+    {% if not account.anonym %}
+        <button id="add_reminder__popup" href="{% url 'add_reminder' %}">Добавить помянник</button>
+        <br>
+        <br>
+    {% endif %}
+    {% for reminder in reminders %}
+        <div>
+            <a href="{% url 'reminder' reminder.id %}">{{ reminder.title }} ({{ reminder.get_items_count }})</a>
+            {% if not reminder.permanent %}
+                <a class="edit_reminder__popup" href="{% url 'edit_reminder' reminder.id %}">редактировать</a>
+                <a class="delete_reminder__popup" href="{% url 'delete_reminder' reminder.id %}">удалить</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+
+{% endblock %}

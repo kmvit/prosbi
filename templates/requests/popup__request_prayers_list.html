@@ -1,0 +1,9 @@
+<div class="popup">
+   
+    <ul>
+        {% for event in req.request_prayevents.all %}
+            <li>{{ event.prayer.get_name }} {% if event.prayer.get_dignity %}({{ event.prayer.get_dignity }}){% endif %}</li>
+        {% endfor %}
+        
+    </ul>
+</div>

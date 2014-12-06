@@ -1,0 +1,7 @@
+<div class="popup">
+    <h2>Удалить молитву из вашего молитвослова?</h2>
+    <form action="{% url 'delete_prayer_book_item' prayerbook_item.id %}" method="post">{% csrf_token %}
+        <input id="delete_prayerbook_item__submit" name="delete" type="button" value="Да"/>
+        <input id="delete_prayerbook_item__submit" name="cancel" type="button" value="Отмена"/>
+    </form>
+</div>

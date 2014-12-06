@@ -1,0 +1,58 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+    <h1>Мой молитвослов</h1>
+
+    <a class="noprint" href="{% url 'pray_categories' %}">Молитвы</a>
+    <a class="noprint" href="#" onclick="window.print()">Печать</a>
+    <a class="noprint" href="{% url 'export_prayerbook_pdf' prayer_book.id %}">Скачать PDF</a>
+
+    <a class="toggle noprint" data-toggle="add_pray" href="#">Добавить молитву</a>
+
+    <div style="display: none" id="add_pray" class="popup">
+        <h2>Добавить молитву</h2>
+
+        <form action="{% url 'prayer_book' prayer_book.id %}" method="post">{% csrf_token %}
+            <table>
+                <tr>
+                    <td>
+                        {{ form.prayerbook }}
+                        {{ form.pray.errors }}
+                        {{ form.pray }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="add_pray__submit" type="button" value="Добавить"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    {% for prayer_item in prayer_book.prayerbook_items.all %}
+        <div>
+            <h3>{{ prayer_item.pray.name }}</h3>
+            <span class="sorting noprint">
+                <style type="text/css">
+                    .sorting a {
+                        text-decoration: none;
+                        color: graytext;
+                    }
+                </style>
+                {% if not forloop.first %}
+                    <a class="move_prayerbook_item" href="{% url 'move_prayerbook_item' prayer_item.id %}?direction=up">
+                        &#x25B2;</a>
+                {% endif %}
+                {% if not forloop.last %}
+                    <a class="move_prayerbook_item"
+                       href="{% url 'move_prayerbook_item' prayer_item.id %}?direction=down">&#x25BC;</a>
+                {% endif %}
+                <a class="delete_prayerbook_item__popup" href="{% url 'delete_prayer_book_item' prayer_item.id %}"<>&#215;</a>
+            </span>
+            {{ prayer_item.pray.text|safe }}
+        </div>
+    {% endfor %}
+
+{% endblock %}

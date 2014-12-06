@@ -1,0 +1,38 @@
+
+
+{% extends 'home.html' %}
+{% block quote %}
+ <div id="quote"><!--noindex--><p >«Истинно также говорю вам, что если двое из вас согласятся на земле просить о всяком деле, то, чего бы ни попросили, будет им от Отца Моего Небесного» (Мф. 18, 19)</p><!--/noindex-->
+ </div>
+ {% endblock %}
+{% block content %}
+
+    <h1>Православный молитвослов</h1>
+<br>
+    <a href="{% url 'requests' %}">Главная</a>
+    {% if not account.anonym %}
+        <a href="{% url 'prayer_book' account.prayerbook.id %}">Мой молитвослов</a>
+    {% endif %}
+
+   
+    {% for pray_category in pray_categories %}
+       <div> <ul class="molitvoslov-razdely">
+       <li>     <a class="toggle" data-toggle="prays_{{ pray_category.id }}" href="#">{{ pray_category.name }}</a></li>
+            <div style="display: none" id="prays_{{ pray_category.id }}">
+                {% for pray in pray_category.praycategory_prays.all %}
+                 <ul>   <li><a href="{% url 'pray' pray.slug %}">{{ pray.name }}</a></li></ul>
+                {% endfor %}
+            </div>
+            </ul>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}
+{% block side_left%}
+
+<div id="tags">
+<a href="/prays"><img src="{{STATIC_URL}}images/molitvoslov_1.jpg" alt="Православный молитвослов" /></a>
+ </div>
+
+{% endblock %}

@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% load main_tags %}
+
+
+
+    {% header_tag %}
+
+    {% block content %}{% endblock %}
+
+    {% block scripts %}
+
+        <script type="text/javascript">
+
+            // register name autocomplete
+
+            $('#name_register').autocomplete({
+                delay: 0,
+                minLength: 2,
+                source: "{% url 'live_search_names' %}"
+            });
+
+            // Tagged names and autocomlete
+
+            $('#live_names').tagit({
+                fieldName: 'raw_names',
+                tagLimit: 4,
+                singleField: false,
+                showAutocompleteOnFocus: true,
+                autocomplete: {
+                    delay: 0,
+                    minLength: 2,
+                    source: "{% url 'live_search_names' %}"
+                }
+            });
+
+            $(document).ready(function () {
+
+                //toggle
+                $('.toggle').on('click', function(e){
+                    e.preventDefault();
+                    $('#'+$(this).attr('data-toggle')).toggle();
+                })
+
+                //post register
+                $('#account_register__submit').click(function (e) {
+                    var that = $(this);
+                    e.preventDefault();
+                    var url = $(this).parents('form').attr('action');
+                    var data = $(this).parents('form').serialize();
+                    $.post(
+                        url,
+                        data,
+                        function (resp) {
+                            if (resp.status) {
+                                if (resp.redirect){
+                                    alert(resp.message);
+                                    location.href = resp.redirect;
+                                }
+                                if (resp.html) {
+                                    that.after(resp.html);
+                                } else {
+                                    location.reload();
+                                }
+                            } else {
+                                alert(resp.message);
+                            }
+                        }
+                    )
+                });
+
+                //post add request with tagged names
+                function add_request_post(selector) {
+                    $(selector).click(function (e) {
+                        e.preventDefault();
+                        var that = $(this);
+                        var url = $(this).parents('form').attr('action');
+                        var data = $(this).parents('form').serializeArray();
+
+                        $.post(
+                                url,
+                                data,
+                                function (resp) {
+                                    console.log(resp);
+                                    if (resp.status) {
+                                        alert(resp.message);
+                                        // add new names popup
+                                        if (resp.html) {
+                                            that.after(resp.html)
+                                        } else {
+                                            location.reload();
+                                        }
+                                    } else {
+                                        alert(resp.message);
+                                    }
+                                }
+                        );
+                    });
+                }
+
+                //move prayerbook item
+                $('.move_prayerbook_item').click(function(e){
+                    e.preventDefault();
+                    $.get(
+                        $(this).attr('href'),
+                        function(resp){
+                            if(resp.status){
+                                alert(resp.message);
+                                location.reload();
+                            } else {
+                                alert(resp.message);
+                            }
+                        }
+                    )
+                });
+
+                //add pray to prayerbook
+                $('.add_pray_to_prayerbook').click(function(e){
+                    e.preventDefault();
+                    $.get(
+                        $(this).attr('href'),
+                        function(resp){
+                            if(resp.status){
+                                alert(resp.message);
+                                location.reload();
+                            } else {
+                                alert(resp.message);
+                            }
+                        }
+                    )
+                });
+
+                //simple post form
+                function simple_post(selector) {
+                    $(selector).click(function (e) {
+                        e.preventDefault();
+                        var url = $(this).parents('form').attr('action');
+                        var data = $(this).parents('form').serialize();
+                        $.post(
+                                url,
+                                data,
+                                function (resp) {
+                                    if (resp.status) {
+                                        alert(resp.message);
+                                        location.reload();
+                                    } else {
+                                        alert(resp.message);
+                                    }
+                                }
+                        )
+                    });
+                }
+
+                //simple get popup form
+                function simple_get_popup(selector) {
+                    $(selector).click(function (e) {
+                        var el = $(this);
+                        e.preventDefault();
+                        $.get(
+                                $(this).attr('href'),
+                                function (resp) {
+                                    if (resp.status) {
+                                        $('.popup').remove();
+                                        el.after(resp.popup);
+                                    } else {
+                                        alert(resp.message);
+                                    }
+                                }
+                        )
+                    });
+                }
+
+                //simple post popup form
+                function simple_post_popup(selector) {
+                    $(document).on('click', selector, function (e) {
+                        e.preventDefault();
+                        var url = $(this).parents('form').attr('action');
+                        var data = $(this).parents('form').serializeArray();
+                        data.push({name: this.name, value: this.value});
+                        $.post(
+                                url,
+                                data,
+                                function (resp) {
+                                    console.log(resp)
+                                    if (resp.status) {
+                                        alert(resp.message);
+                                        location.reload();
+                                    } else {
+                                        alert(resp.message);
+                                    }
+                                }
+                        )
+                    });
+                }
+
+
+                simple_post('#signup__submit');
+                simple_post('#login__submit');
+
+                simple_post_popup('#name_register__submit');
+
+                simple_post('.add_prayer_event__submit');
+                simple_post('#add_comment__submit');
+
+                simple_get_popup('#add_request__popup');
+                //submit with tagged names
+                add_request_post('#add_request__submit');
+                simple_post_popup('#add_names__submit');
+
+                simple_get_popup('.request_prayer__popup');
+
+                simple_get_popup('#add_reminder__popup');
+                simple_post_popup('#add_reminder__submit');
+
+                simple_get_popup('.delete_reminder__popup');
+                simple_post_popup('#delete_reminder__submit');
+
+                simple_get_popup('.edit_reminder__popup');
+                simple_post_popup('#edit_reminder__submit');
+
+                simple_get_popup('#add_reminderitem__popup');
+                simple_post_popup('#add_reminderitem__submit');
+
+                simple_get_popup('.delete_reminderitem__popup');
+                simple_post_popup('#delete_reminderitem__submit');
+
+                simple_get_popup('.set_permanent_reminderitem__popup');
+                simple_post_popup('#set_permanent_reminderitem__submit');
+
+                simple_post('#add_pray__submit');
+
+                simple_get_popup('.delete_prayerbook_item__popup');
+                simple_post_popup('#delete_prayerbook_item__submit');
+
+
+                $(document).on('click', '.close_popup', function (e) {
+                    e.preventDefault();
+                    $('.popup').hide();
+                })
+
+                //Ajax csrf token
+                jQuery(document).ajaxSend(function (event, xhr, settings) {
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+
+                    function sameOrigin(url) {
+                        var host = document.location.host; // host + port
+                        var protocol = document.location.protocol;
+                        var sr_origin = '//' + host;
+                        var origin = protocol + sr_origin;
+                        return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+                                (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') || !(/^(\/\/|http:|https:).*/.test(url));
+                    }
+
+                    function safeMethod(method) {
+                        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                    }
+
+                    if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    }
+                });
+            });
+        </script>
+
+    {% endblock %}
+

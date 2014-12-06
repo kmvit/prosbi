@@ -1,0 +1,9 @@
+<div class="popup">
+    <h2>Новый помянник</h2>
+    <form action="{% url 'add_reminder' %}" method="post">{% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input id="add_reminder__submit" type="button" value="Добавить"/>
+    </form>
+</div>

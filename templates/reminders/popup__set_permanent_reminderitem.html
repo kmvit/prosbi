@@ -1,0 +1,7 @@
+<div class="popup">
+    <h2>Закрепить имя в помяннике?</h2>
+    <form action="{% url 'set_permanent_reminderitem' reminder_item.id %}" method="post">{% csrf_token %}
+        <input id="set_permanent_reminderitem__submit" name="set_permanent" type="button" value="Да"/>
+        <input id="set_permanent_reminderitem__submit" name="cancel" type="button" value="Отмена"/>
+    </form>
+</div>

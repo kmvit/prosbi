@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="ru">
+<head>
+{% load main_tags %}
+{% load staticfiles %} 
+<title>Прошу молитв - православный сайт взаимной молитвенной поддержки</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="keywords" content="" /><meta name="description" content="" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+    <script src="{{ STATIC_URL }}js/tag-it.js" type="text/javascript" charset="utf-8"></script>
+{#    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">#}
+    <link href="{{ STATIC_URL }}css/jquery.tagit.css" rel="stylesheet" type="text/css">
+<script type='text/javascript'>
+ $(function(){
+  $('input').click(function(){
+   var ourText = $('p');
+   var currFontSize = ourText.css('fontSize');
+   var finalNum = parseFloat(currFontSize, 10);
+   var stringEnding = currFontSize.slice(-2);
+   if(this.id == 'large') {
+    finalNum *= 1.2;
+   }
+   else if (this.id == 'small'){
+    finalNum /=1.2;
+   }
+   ourText.animate({fontSize: finalNum + stringEnding},600);
+  });
+ });
+ </script>
+
+	<style type="text/css">
+        @media print { /* Стиль для печати */
+            .noprint {
+               display: none;
+            }
+        }+    </style>
+        
+</head>
+
+<body>
+{% block body %}
+<div id="wrapper">
+ <div id="header" class="noprint">
+ <div id="header_left">
+ <a href="/"><img src="{{ STATIC_URL }}images/logo.jpg" width="367" height="264" alt="Прошу молитв" title="Прошу молитв"  /></a>
+ </div>
+ <div id="header_middle">
+
+ <div id="main_menu">
+     {% for menu_item in menu.top.items %}
+    {% ifequal request.get_full_path menu_item.url %}
+        <div id="active"><a href='{{ menu_item.url }}'>{{ menu_item.name }}</a></div>
+    {% else %}
+
+<div>    <a href="{{ menu_item.url }}"
+
+    {% if menu_item.title %}
+        title="{{ menu_item.title }}"
+    {% endif %}
+
+    {% if menu_item.target %}
+        target="{{ menu_item.target }}"
+    {% endif %}>{{ menu_item.name }}</a></div>
+{% endifequal %}{%endfor%}
+     
+ </div>   
+  {% block buttons %}{% endblock %}
+ {% block quote %}
+ <div id="quote"><!--noindex--><p >Мир Вам! Наш сайт создан для совместной молитвы людей друг о друге. Здесь Вы можете попросить молитв, помолиться за других, составить и распечатать помянник, найти избранные молитвы о других людях и в насущных житейских нуждах. <a href="/about">Подробнее о нашем сайте читайте здесь</a>.</p><!--/noindex-->
+ </div>
+ {% endblock %}
+ <div id="social_block" class="noprint"> 
+ </div> 
+ </div>
+ <div id="header_right" class="noprint"><table border="0"><tr><td></td><td></td></tr><tr><td colspan=2><center><table border="0"><tr><td></td><td></td></tr></table></center></td></tr></table> 
+ </div>
+ </div> 
+ <div id="middle">  
+ 
+ <div id="container">
+ <div id="content">
+ {% block content %}
+{% endblock %}
+{% block scripts %}{% endblock %}
+ </div>
+ </div> 
+ 
+  <div class="sidebar noprint" id="sideLeft">
+{% block side_left%}
+<h2>Как молиться?</h2> 
+ <!--noindex-->Молиться нужно не только за себя, но и за других. &quot;Молитва о себе самих, взятая отдельно от молитвы за других, как плод духовного своекорыстия, не может составить чистой христианской добродетели&quot;, - говорит святитель Московский Филарет. Христианин должен молиться за всех, как за себя, чтобы Бог даровал им преуспеяние веры и разума духовного, а от грехов и страстей свободу. <a title="Молитва ходатайственная - Молитва за других (К.Е. Скурат)" href="http://www.wco.ru/biblio/books/skurat2/H05-T.htm">Читать далее...</a><!--/noindex--><br /><br />
+<!--noindex--><h2>Помоги!</h2>
+<iframe src="http://predanie.ru/banner/new/200x300/?color=white" frameBorder="0" width="203" height="303" marginWidth="0" marginHeight="0" scrolling="no" style="border: 0px; margin: 0px; padding: 0px;"></iframe><br />Сайт <a target="_blank" href="http://predanie.ru/">«Предание.ру»</a><!--/noindex--> 
+ 
+ {% endblock %}
+ </div> 
+{% block side_right %}
+ <div class="sidebar noprint" id="sideRight">  <!--noindex--><div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+  {% header_tag %}
+<a class="addthis_button_google_plusone" g:plusone:count="false"></a>
+<a class="addthis_button_facebook" title="Отправить в Facebook"><img src="{{ STATIC_URL }}images/soc_btn_fb.jpg" width="32" height="32" border="0" alt="Отправить в Facebook" /></a>
+<a class="addthis_button_vk" title="Отправить в ВКонтакте"><img src="{{ STATIC_URL }}images/soc_btn_vk.jpg" width="32" height="32" border="0" alt="Отправить в ВКонтакте" /></a>
+<a class="addthis_button_twitter" title="Отправить в Twitter"><img src="{{ STATIC_URL }}images/soc_btn_twitter.jpg" width="32" height="32" border="0" alt="Отправить в Twitter" /></a>
+<a class="addthis_button_mymailru" title="Отправить в МойМир.mail.ru"><img src="{{ STATIC_URL }}images/soc_btn_my.jpg" width="32" height="32" border="0" alt="Отправить в МойМир.mail.ru" /></a>
+<a class="addthis_button_odnoklassniki_ru" title="Отправить на Одноклассники"><img src="{{ STATIC_URL }}images/soc_btn_odnoklassniki.jpg" width="32" height="32" border="0" alt="Отправить на Одноклассники" /></a>
+<a class="addthis_button_livejournal" title="Отправить в LiveJournal"><img src="{{ STATIC_URL }}images/soc_btn_lj.jpg" width="32" height="32" border="0" alt="Отправить в LiveJournal" /></a>
+</div>
+
+<script type="text/javascript">var addthis_config = {ui_click: true, data_track_clickback: true}</script><script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=nsuvorov"></script><br /><br />  <a class="twitter-timeline" href="https://twitter.com/orthodox_rus" data-widget-id="257128745209565184">Твиты пользователя @orthodox_rus</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script><br /><br /><!--/noindex-->
+ </div> 
+{% endblock%} 
+ </div>  
+ </div>
+{% endblock %}
+{% block footer %}<div id="footer" class="noprint">
+<!--noindex--><p>Сайт создан по благословению священника Димитрия Пашкова.<br />E-mail редакции: <a href="mailto:info@proshumolitv.ru">info@proshumolitv.ru</a></p><!--/noindex-->
+</div>
+
+<script   type="text/javascript">
+reformal_wdg_domain = "proshumolitv";
+reformal_wdg_mode = 0;
+reformal_wdg_title = "Прошу молитв";
+reformal_wdg_ltitle = "Свяжитесь с нами";
+reformal_wdg_lfont = "";
+reformal_wdg_lsize = "";
+reformal_wdg_color = "#385b91";
+reformal_wdg_bcolor = "#516683";
+reformal_wdg_tcolor = "#FFFFFF";
+reformal_wdg_align = "right";
+reformal_wdg_charset = "utf-8";
+reformal_wdg_waction = 0;
+reformal_wdg_vcolor = "#9FCE54";
+reformal_wdg_cmline = "#E0E0E0";
+reformal_wdg_glcolor = "#105895";
+reformal_wdg_tbcolor = "#FFFFFF";
+ 
+reformal_wdg_bimage = "7ca2268e34918af5f0735d9570c4016a.png";
+ 
+</script><script class="noprint" type="text/javascript" language="JavaScript" src="http://reformal.ru/tab6.js?charset=utf-8"></script><noscript><a href="http://proshumolitv.reformal.ru">Прошу молитв feedback </a> <a href="http://reformal.ru"><img src="http://reformal.ru/i/logo.gif" /></a></noscript>  <div id="preload">
+<img src="/images/btn_poprosit_molitv_light.jpg" />
+<img src="/images/btn_pomolus_light.jpg" />
+<img src="/images/btn_pomolus.jpg" />
+<img src="/images/btn_pomolus_voted.jpg" />
+<img src="/images/btn_pomyannik.jpg" />
+<img src="/images/btn_pomyannik_light.jpg" />
+</div>  <div style="display:none;"><script type="text/javascript">
+(function(w, c) {
+ (w[c] = w[c] || []).push(function() {
+ try {
+ w.yaCounter1017868 = new Ya.Metrika({id:1017868, enableAll: true, webvisor:true});
+ }
+ catch(e) { }
+ });
+})(window, "yandex_metrika_callbacks");
+</script></div>
+{% endblock %}
+</body>
+</html>

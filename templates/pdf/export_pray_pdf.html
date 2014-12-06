@@ -1,0 +1,42 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        @font-face {
+          font-family: russ;
+          src: url('{{ STATIC_ROOT }}/fonts/Verdana.ttf');
+        }
+
+        @page {
+            size: a4 portrait;
+            @frame content_frame {
+                left: 40pt; width: 520pt; top: 50pt; height: 750pt;
+            }
+        }
+
+        body  {
+            font-family: russ;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <table style="width: 100%">
+{#        <tr>#}
+{#            <td colspan="2" style="text-align: center; padding: 10pt">#}
+{#                <img style="width: 20pt" src="{{ STATIC_ROOT }}/images/krest.jpg" alt=""/>#}
+{#            </td>#}
+{#        </tr>#}
+        <tr>
+            <td style="text-align: center; padding: 20px">
+                <h1>{{ pray.name }}</h1>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 20px;">
+                {{ pray.text|safe }}
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

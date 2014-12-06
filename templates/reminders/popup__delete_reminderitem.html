@@ -1,0 +1,7 @@
+<div class="popup">
+    <h2>Удалить имя из помянника?</h2>
+    <form action="{% url 'delete_reminderitem' reminder_item.id %}" method="post">{% csrf_token %}
+        <input id="delete_reminderitem__submit" name="delete" type="button" value="Да"/>
+        <input id="delete_reminderitem__submit" name="cancel" type="button" value="Отмена"/>
+    </form>
+</div>

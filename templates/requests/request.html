@@ -1,0 +1,113 @@
+{% extends 'home.html' %}
+
+{% block quote %}
+ <!--noindex--><div id="quote">«Истинно также говорю вам, что если двое из вас согласятся на земле просить о всяком деле, то, чего бы ни попросили, будет им от Отца Моего Небесного» (Мф. 18, 19)
+ </div><!--/noindex-->
+ {% endblock %}
+ {% block buttons %}
+<div id="btn_poprosit_molitv_pomyannik">
+<a class="toggle" data-toggle="add_request" href="#"></a>
+</div>
+{% endblock %}
+{% block content %}
+
+   
+     <div style="display: none" id="add_request" class="popup">
+        <h2>Новая молитвенная просьба</h2>
+        <form action="{% url 'add_request' %}" method="post">{% csrf_token %}
+            <table>
+                <tr>
+                    <th>Имена</th>
+                    <td><ul id="live_names"></ul></td>
+                </tr>
+                {{ form.as_table }}
+            </table>
+            <input id="add_request__submit" type="image" src="{{ STATIC_URL }}images/green-button.jpg" value="Просить молитв"/>
+        </form>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#live_names").tagit();
+            });
+        </script>
+    </div>
+    <div>
+        <h1>Молитвенная просьба {{ req.category.name }}: {{ req.get_names_string }},</h1>
+        <small>{{ req.date|date:"d.m.Y" }} {{ req.account.get_name }}</small>
+        <p>{{ req.comment }}</p><br><table border='0'>
+		<table border='0'><tr><td>
+		 <tr><td width='375'>
+		
+
+		 <div>
+        <span>Молитвы</span>
+
+        <div>
+            {% for pray in req.category.category_prays.all %}
+                <a href="{% url 'pray' pray.slug %}">{{ pray.name }}</a><br>
+            {% endfor %}
+
+        </div></td><td>
+    </div>
+		
+  
+
+        <form action="{% url 'add_pray_event' %}" method="post">{% csrf_token %}
+            {{ pray_event_form.as_p }}
+            {% if account in request.get_prayers %} 
+                          <input class="add_prayer_event__submit" type="image" src="{{ STATIC_URL }}images/btn_pomolus2.jpg"  value="Помолиться"/>
+                       {% else %} 
+                            <input class="add_prayer_event__submit" type="image" src="{{ STATIC_URL }}images/btn_pomolus.jpg"  value="Помолиться"/>
+                       {% endif %} 
+        </form></td><td>
+		      <span class="molyatsya"><a class="request_prayer__popup" style='color:black'
+              href="{% url 'get_request_prayer_list' req.id %}">Молятся:{{ req.get_prayer_count }}</a></span>
+    </div></td></tr></table>
+
+   
+
+    <div>
+    <!-- 
+    
+    <h2>Комментарии</h2>
+        {% for comment in req.request_comments.all %}
+            <div class="comment">
+                <small>{{ comment.date|date:"d.m.Y" }} {{ comment.account.get_name }}</small>
+                <p>
+
+                {{ comment.text }}<p>
+            </div>
+        {% endfor %}
+       
+        
+         {% if not account.anonym %} 
+          <div> 
+                <form action="{% url 'add_comment' %}" method="post">{% csrf_token %} 
+                   <table> 
+                       {{ comment_form.as_table }} 
+                   </table> 
+                   <input id="add_comment__submit" type="image" src="{{ STATIC_URL }}images/green-button.jpg" value="добавить"/>
+               </form> 
+            </div> 
+         {% else %} 
+            Зарегистрируйтесь, чтобы оставлять комментарии 
+         {% endif %} 
+
+    </div>
+    /-->
+    <script type="text/javascript">(function() {
+  if (window.pluso)if (typeof window.pluso.start == "function") return;
+  if (window.ifpluso==undefined) { window.ifpluso = 1;
+    var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+    s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+    s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+    var h=d[g]('body')[0];
+    h.appendChild(s);
+  }})();</script>
+<div class="pluso" data-background="none;" data-options="small,square,line,horizontal,counter,sepcounter=1,theme=14" data-services="odnoklassniki,facebook,vkontakte"></div>
+
+{% endblock %}
+{% block side_left%}
+
+{% endblock %}
+{% block side_right %}
+{% endblock %}

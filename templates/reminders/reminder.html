@@ -1,0 +1,67 @@
+{% extends 'home.html' %}
+
+{% block content %}
+  
+    </style>
+    <span class="noprint">
+        <a href="/">На главную</a>
+        <a href="{% url 'reminders' %}">Мои помянники</a>
+    </span>
+
+    <h1>{{ reminder.title }}</h1>
+
+    <span class="noprint">
+        <button id="add_reminderitem__popup" href="{% url 'add_reminderitem' reminder.id %}">Добавить имя</button>
+
+            {% if names_only %}
+                <a href="{% url 'reminder' reminder.id %}">полный вид</a>
+            {% else %}
+                <a href="{% url 'reminder' reminder.id %}?names_only=1">только имена</a>
+            {% endif %}
+
+        <a href="{% url 'export_pdf' reminder.id %}?to_church=1">Скачать PDF в виде записки для подачи в храме</a>
+        <a href="{% url 'export_pdf' reminder.id %}">Скачать PDF</a>
+        <a onClick="window.print()" href="#">Печать</a>
+    </span>
+
+    <h3>Имена</h3>
+    {% if names_only %}
+        <table class="for_print">
+            {% for item in reminder.reminder_items.all %}
+                <tr>
+                    {% if item.from_request %}
+                        <td style="color: orangered"><strong>{{ item.name }}</strong></td>
+                    {% else %}
+                        <td><strong>{{ item.name }}</strong></td>
+                    {% endif %}
+                    {% if item.from_request %}
+                        <td class="noprint"><a class="set_permanent_reminderitem__popup" href="{% url 'set_permanent_reminderitem' item.id %}">Добавить в постоянный помянник</a></td>
+                    {% endif %}
+                    <td class="noprint"><a class="delete_reminderitem__popup" href="{% url 'delete_reminderitem' item.id %}">удалить</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <table>
+            {% for item in reminder.reminder_items.all %}
+                <tr>
+                    {% if item.from_request %}
+                        <td style="color: orangered"><strong>{{ item.name }} {% if item.category.name != 'О здравии' %}({{ item.category }}){% endif %}</strong></td>
+                        <td>{{ item.comment }}</td>
+                    {% else %}
+                        <td><strong>{{ item.name }}</strong></td>
+                        <td colspan="2">{{ item.comment }}</td>
+                    {% endif %}
+                    {% if item.from_request %}
+                        <td class="noprint"><a class="set_permanent_reminderitem__popup" href="{% url 'set_permanent_reminderitem' item.id %}">Добавить в постоянный помянник</a></td>
+                    {% endif %}
+                    <td class="noprint"><a class="delete_reminderitem__popup" href="{% url 'delete_reminderitem' item.id %}">удалить</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+
+
+
+{% endblock %}

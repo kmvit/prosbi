@@ -1,0 +1,34 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        @font-face {
+          font-family: russ;
+          src: url('{{ STATIC_ROOT }}/fonts/Verdana.ttf');
+        }
+
+        @page {
+            size: a4 portrait;
+            @frame content_frame {
+                left: 40pt; width: 520pt; top: 50pt; height: 750pt;
+            }
+        }
+
+        body  {
+            font-family: russ;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div style="text-align: center">
+        <h1>Мой молитвослов</h1>
+    </div>
+    {% for pray in prayerbook.prays.all %}
+        <h2>{{ pray.name }}</h2>
+        {{ pray.text|safe }}
+    {% endfor %}
+
+</body>
+</html>

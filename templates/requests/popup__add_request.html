@@ -1,0 +1,11 @@
+<div class="popup">
+    <h2>Новая молитвенная просьба</h2>
+    <form action="{% url 'add_request' %}" method="post">{% csrf_token %}
+        <table>
+		
+            <tr><ul id="live_names"></ul></tr>
+            {{ form.as_table }}
+        </table>
+        <input id="add_request__submit" type="button" value="Просить молитв"/>
+    </form>
+</div>

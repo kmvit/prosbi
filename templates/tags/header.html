@@ -1,0 +1,31 @@
+<div id='auth' style='margin-right:50px;'>
+
+    {% if auth %}
+
+        Здравствуйте
+        {{ account.name.nominative }} <a href="{% url 'logout' %}">,Выйти</a>
+        <br>
+    {% else %}
+        <a class="toggle" data-toggle='login' href="#">войти</a>
+        <a class="toggle" data-toggle='register' href="#">регистрация</a>
+
+        <span style="display: none" id="login">
+            <h4>Логин</h4>
+            <form action="{% url 'login' %}" method="post">{% csrf_token %}
+                <table>
+                    {{ login_form.as_table }}
+                </table>
+                <input id="login__submit" type="submit" value="login"/>
+            </form>
+        </span>
+
+        <span style="display: none" id="register">
+            <h4>Зарегистрироваться</h4>
+            <form action="{% url 'signup' %}" method="post">{% csrf_token %}
+                <input type="text" name="email"/>
+                <input id="signup__submit" type="submit" value="sign up"/>
+            </form>
+        </span>
+        <br><br>
+    {% endif %}
+    </div>

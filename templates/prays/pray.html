@@ -1,0 +1,44 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+    <a class="noprint" href="{%  url 'pray_categories' %}">Все молитвы</a>
+    <a class="noprint" href="#" onclick="window.print()">Печать</a>
+    <a class="noprint" href="{% url 'export_pray_pdf' pray.id %}">Скачать PDF</a>
+
+    <h1>{{ pray.name }}</h1>
+    {% if not account.anonym %}
+        {% if pray_in_my_praybook %}
+            <a class="noprint" href="#">Молитва в моем молитвослове</a><br><br>
+        {% else %}
+            <a class='add_pray_to_prayerbook noprint' href="{% url 'add_pray_to_prayerbook' pray.id %}">Добавить в мой молитвослов</a><br><br>
+        {% endif %}
+    {% endif %}
+
+    <div style="clear: both"></div>
+  <input type='button' value='+' id='large' /><input type='button' value='‒' id='small' />
+
+    {{ pray.text|safe }}<br>
+    
+      {% for icon in pray.icons.all %}
+        <div style=" text-align: center; margin-right: 10px">
+            <img src="{{ icon.img.url }}" alt="{{ icon.description }}"/>
+            <p>{{ icon.name }}</p>
+        </div>
+        {% if forloop.last %}
+            <div style="clear: both"></div>
+        {% endif %}
+    {% endfor %}
+    
+     <script type="text/javascript">(function() {
+  if (window.pluso)if (typeof window.pluso.start == "function") return;
+  if (window.ifpluso==undefined) { window.ifpluso = 1;
+    var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+    s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+    s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+    var h=d[g]('body')[0];
+    h.appendChild(s);
+  }})();</script>
+<div class="pluso" data-background="none;" data-options="small,square,line,horizontal,counter,sepcounter=1,theme=14" data-services="odnoklassniki,facebook,vkontakte"></div>
+
+{% endblock %}

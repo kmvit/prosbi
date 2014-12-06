@@ -1,0 +1,7 @@
+Здравствуйте, к вашей просьбе на сайте proshumolitv.ru добавлен новый комментарий:
+
+    Автор: {% if comment.account.name %}{{ comment.account.name }}{% else %}неизвестен{% endif %}
+    Дата: {{ comment.date|date:"d.m.Y" }}
+    Текст: {{ comment.text }}
+
+<a href="http://proshumolitv.ru"{% url 'request' comment.request.id %}>Перейти к просьбе</a>

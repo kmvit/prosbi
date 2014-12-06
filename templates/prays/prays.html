@@ -1,0 +1,34 @@
+{% extends 'home.html' %}
+{% block quote %}
+ <!--noindex--><div id="quote">«Истинно также говорю вам, что если двое из вас согласятся на земле просить о всяком деле, то, чего бы ни попросили, будет им от Отца Моего Небесного» (Мф. 18, 19)
+ </div><!--/noindex-->
+ {% endblock %}
+
+{% block content %}
+
+
+   {% if not account.anonym %}
+      <a href="{% url 'prayer_book' account.prayerbook.id %}">Мой молитвослов</a>
+   {% endif %}
+   
+<h1>Православный молитвослов</h1>
+    {% for pray in prays %}
+       
+        <div>
+        {% if pray.category %}
+        
+		<ul class="molitvoslov-razdely">
+          <li> <a href="{% url 'pray' pray.slug %}">{{ pray.name }}</a></li>
+		  </ul>
+           {%endif%}
+        </div>
+    {% endfor %}
+
+{% endblock %}
+{% block side_left%}
+
+<div id="tags">
+<a href="/prays"><img src="{{STATIC_URL}}images/molitvoslov_1.jpg" alt="Православный молитвослов" /></a>
+ </div>
+
+{% endblock %}

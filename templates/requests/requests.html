@@ -1,0 +1,164 @@
+{% extends 'home.html' %}
+ {% block buttons %}
+<div id="btn_poprosit_molitv_pomyannik">
+<a class="toggle" data-toggle="add_request" href="#"></a>
+<a class="light" href="{% url 'reminders' %}"></a>
+</div>
+{% endblock %}
+{% block content %}
+
+
+    <div style="display: none" id="add_request" class="popup">
+        <h2>Новая молитвенная просьба</h2>
+        <form class='form_prosba' name='form_prosba' action="{% url 'add_request' %}" method="post">{% csrf_token %}
+            <table>
+                <tr>
+                    <td><strong>Имя (о ком просим помолиться):</strong><br /><small>При поминании имён принято указывать их в родительном падеже. Например, мы просим помолиться о здравии Иоанна (Ивана) или молитв о вразумлении Елены</small></td>
+                    <td><ul id="live_names"></ul></td>
+                </tr>
+                {{ form.as_table }}
+            </table>
+            <input id="add_request__submit" type="image" src="{{ STATIC_URL }}images/green-button.jpg" value="Просить молитв"/>
+        </form>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#live_names").tagit();
+            });
+        </script>
+    </div>
+	{% for request in requests %}
+<div class='prosba'>
+ <div class='prosba_block_shadow_top'>
+ <div class='prosba_block_shadow_bottom'> 
+ <div class='prosba_block'>
+   
+	
+        
+           
+               
+                   <span class='prosba_tema'>{{ request.category.name }}:</span>&nbsp; <span class='prosba_name'><a href="{% url 'request' request.id %}" style="color:black;" >{{ request.get_names_string }}</a></span>
+                <br>  <span class='prosba_text'><style="color:black;" ><small>{{ request.date|date:"d.m.Y" }}</small> <p>{{ request.comment }}</p></span><br /><br /><table border='0'>
+				  <tr><td width='375'>
+				  <span>Молитвы:{% for pray in request.category.category_prays.all %} </span><strong><a href="{% url 'pray' pray.slug %}">{{ pray.name }}</a></strong>
+{% endfor %}</td><td>
+			
+				  <form class="light" action="{% url 'add_pray_event' %}" method="post">{% csrf_token %}
+                        <input type="hidden" name="request" value="{{ request.id }}"/>
+                        <input type="hidden" name="prayer" value="{{ account.id }}"/>
+                       
+                      {% if account in request.get_prayers %} 
+                          <input class="add_prayer_event__submit" type="image" src="{{ STATIC_URL }}images/btn_pomolus2.jpg"  value="Помолиться"/>
+                       {% else %} 
+                            <input class="add_prayer_event__submit" type="image" src="{{ STATIC_URL }}images/btn_pomolus.jpg"  value="Помолиться"/>
+                       {% endif %} 
+
+
+                    </form></a></td><td><span class="molyatsya"> <a class="request_prayer__popup" style='color:black'href="{% url 'get_request_prayer_list' request.id %}">Молятся:{{ request.get_prayer_count }}</a></span></td></tr></table>
+
+</div>
+</div>
+</div>
+</div>
+  {% endfor %}
+    <div class="pagination">
+
+       <ul class="pagination">
+    {% if page_obj.has_previous %}
+        <li>
+            <a href="/page/{{ page_obj.previous_page_number }}{{ getvars }}{{ hashtag }}" class="prev" title="previous"}">←</a>
+        </li>
+    {% else %}
+        <li class="disabled">
+            <span>←</span>
+        </li>
+    {% endif %}
+    {% for page in page_obj.paginator.page_range|slice:":3" %}
+        {% if page < page_obj.number %}
+            <li>
+                <a href="/page/{{ page }}{{ getvars }}{{ hashtag }}">
+                    {{ page }}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.number > 5 and page_obj.paginator.num_pages > 6 %}
+        <li>
+            <span>&hellip;</span>
+        </li>
+    {% endif %}
+
+    {% for page in page_obj.paginator.page_range|slice:"-3:" %}
+        {% if page < page_obj.number and page > 3 %}
+            <li>
+                <a href="/page/{{ page }}{{ getvars }}{{ hashtag }}">
+                    {{ page }}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_previous and page_obj.previous_page_number > 3 and page_obj.previous_page_number <= page_obj.paginator.num_pages|add:"-3" %}
+        <li>
+            <a href="/page/{{ page_obj.previous_page_number }}{{ getvars }}{{ hashtag }}">
+                {{ page_obj.previous_page_number }}
+            </a>
+        </li>
+    {% endif %}
+
+    <li class="active">
+        <b>
+            {{ page_obj.number }}
+          
+        </b>
+    </li>
+
+    {% if page_obj.has_next and page_obj.next_page_number > 3 and page_obj.next_page_number <= page_obj.paginator.num_pages|add:"-3" %}
+        <li>
+            <a href="/page/{{ page_obj.next_page_number }}{{ getvars }}{{ hashtag }}">
+                {{ page_obj.next_page_number }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% for page in page_obj.paginator.page_range|slice:":3" %}
+        {% if page > page_obj.number %}
+            <li>
+                <a href="/page/{{ page }}{{ getvars }}{{ hashtag }}">
+                    {{ page }}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.number < page_obj.paginator.num_pages|add:"-4" and page_obj.paginator.num_pages > 6 %}
+        <li>
+            <span>&hellip;</span>
+        </li>
+    {% endif %}
+
+    {% for page in page_obj.paginator.page_range|slice:"-3:" %}
+        {% if page > page_obj.number and page > 3 %}
+            <li>
+                <a href="/page/{{ page }}{{ getvars }}{{ hashtag }}">
+                    {{ page }}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+        <li>
+            <a href="/page/{{ page_obj.next_page_number }}{{ getvars }}{{ hashtag }}" class="next" title="next">→</a>
+        </li>
+    {% else %}
+        <li class="disabled">
+            <span >&raquo;</span>
+        </li>
+    {% endif %}
+</ul>
+
+ 
+
+    </div>
+
+{% endblock %}

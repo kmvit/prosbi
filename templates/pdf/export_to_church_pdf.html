@@ -1,0 +1,44 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        @font-face {
+          font-family: russ;
+          src: url('{{ STATIC_ROOT }}/fonts/Verdana.ttf');
+        }
+
+        @page {
+            size: a4 portrait;
+            @frame content_frame {
+                left: 40pt; width: 520pt; top: 50pt; height: 750pt;
+            }
+        }
+
+        body  {
+            font-family: russ;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <table style="width: 100%">
+        <tr>
+            <td style="text-align: center; padding: 10pt">
+                <img style="width: 50pt" src="{{ STATIC_ROOT }}/images/krest.jpg" alt=""/>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;">
+                <h1>{{ reminder.title }}</h1>
+            </td>
+        </tr>
+        {% for item in reminder.reminder_items.all %}
+            <tr>
+                <td style="text-align: left; margin-left: 20pt">
+                    {% if item.dignity %}{{ item.dignity.short }} {% endif %}{{ item.name }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
